@@ -4,6 +4,9 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import os
+
+
 app = Flask(__name__)
 CORS(app)  # Allow all origins (or restrict by domain later)
 
@@ -17,8 +20,8 @@ def send_email():
         slot = data.get('slot')
 
         # Email setup
-        sender = "your_email@gmail.com"
-        password = "your_app_password"  # Use Gmail App Password
+        sender = os.environ.get("EMAIL_ADDRESS")
+        password = os.environ.get("EMAIL_PASSWORD")  # Use Gmail App Password
         receiver = email
 
         subject = f"🎾 Booking Confirmed for {date}"
