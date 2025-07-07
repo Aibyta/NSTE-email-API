@@ -36,10 +36,14 @@ def send_event_invite():
                 <p><b>Organizer:</b> {organizer}</p>
             </div>
             
+            <p>To confirm your participation, please reply to this email with "Confirm" in the subject line.</p>
+            
+            <p>Alternatively, you can click the button below to send a confirmation email automatically:</p>
+            
             <p>
-                <a href="https://your-app-url.com/event/{eventId}" 
+                <a href="mailto:{sender}?subject=Confirm%20Participation%20for%20{eventName.replace(' ', '%20')}&body=I%20confirm%20my%20participation%20in%20{eventName.replace(' ', '%20')}%20on%20{date}%20at%20{time}." 
                    style="background:#0d6efd;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">
-                    View & Respond to Event
+                    Confirm Participation
                 </a>
             </p>
             
