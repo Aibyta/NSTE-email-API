@@ -7,25 +7,43 @@ from email.mime.text import MIMEText
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/send-email', methods=['POST'])
-def send_email():
+@app.route('/send-event-invite', methods=['POST'])
+def send_event_invite():
     try:
         data = request.get_json()
         name = data.get('name')
         email = data.get('email')
+        eventName = data.get('eventName')
         date = data.get('date')
-        slot = data.get('slot')
+        time = data.get('time')
+        organizer = data.get('organizer')
+        eventId = data.get('eventId')
 
         sender = os.environ.get("EMAIL_ADDRESS")
         password = os.environ.get("EMAIL_PASSWORD")
 
-        subject = f"🎾 Booking Confirmation for {date}"
+        subject = f"🎾 You've been matched for {eventName}!"
         html = f"""
         <html>
         <body>
             <h2>Hi {name},</h2>
-            <p>Your booking for <b>{slot}</b> on <b>{date}</b> is confirmed!</p>
-            <p>- NSTE Team</p>
+            <p>Our AI system has matched you with an upcoming event:</p>
+            
+            <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:15px 0;">
+                <h3>{eventName}</h3>
+                <p><b>Date:</b> {date}</p>
+                <p><b>Time:</b> {time}</p>
+                <p><b>Organizer:</b> {organizer}</p>
+            </div>
+            
+            <p>
+                <a href="https://your-app-url.com/event/{eventId}" 
+                   style="background:#0d6efd;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">
+                    View & Respond to Event
+                </a>
+            </p>
+            
+            <p>- NSTE AI Matchmaking System</p>
         </body>
         </html>
         """
@@ -46,7 +64,6 @@ def send_email():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
-# ✅ This is the critical fix for Render
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
